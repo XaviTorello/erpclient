@@ -536,6 +536,13 @@ class db_login(object):
             for key, server in self.server_config_dict.iteritems():
                     a_title = "{} {} [{}]".format(server['organization'], server['type'], server['env'])
                     sc_liststore.append([key, a_title])
+
+            combo_sc.set_model(sc_liststore)
+            sc_cell = gtk.CellRendererText()
+            combo_sc.pack_start(sc_cell, True)
+            combo_sc.add_attribute(sc_cell, 'text', 1)
+
+            combo_sc.set_active(0)
         host = options.options['login.server']
         port = options.options['login.port']
         protocol = options.options['login.protocol']
