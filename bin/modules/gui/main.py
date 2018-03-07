@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -172,7 +172,7 @@ class DatabaseDialog(gtk.Dialog):
                     win = gtk.Window(type=gtk.WINDOW_TOPLEVEL)
                     win.set_title(_('OpenERP Computing'))
                     win.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
-                    win.set_modal(True) 
+                    win.set_modal(True)
                     vbox = gtk.VBox(False, 0)
                     hbox = gtk.HBox(False, 13)
                     hbox.set_border_width(10)
@@ -309,8 +309,8 @@ class MigrationDatabaseDialog(DatabaseDialog):
     def on_response_accept(self):
         databases = [ item[1] for item in self.model if bool(item[0]) ]
         if databases:
-            rpc.session.migrate_databases(self.serverEntry.get_text(), 
-                                          self.adminPwdEntry.get_text(), 
+            rpc.session.migrate_databases(self.serverEntry.get_text(),
+                                          self.adminPwdEntry.get_text(),
                                           databases)
             if len(databases) == 1:
                 self.message = _("Your database has been upgraded.")
@@ -587,8 +587,7 @@ class db_login(object):
             host = combo_sc.get_active()
             combo_sc.connect('changed', self.change_server_config)
         else:
-            # todo hide combobox
-            pass
+            combo_sc.hide()
 
         host = options.options['login.server']
         port = options.options['login.port']
@@ -1291,7 +1290,7 @@ class terp_main(service.Service):
         self.pages.append(win)
         box = gtk.HBox(False, 0)
 
-        # Draw the close button on the right 
+        # Draw the close button on the right
         closebtn = gtk.Button()
         image = gtk.Image()
         image.set_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
@@ -1635,4 +1634,3 @@ class terp_main(service.Service):
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
