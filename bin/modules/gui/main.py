@@ -480,6 +480,9 @@ class db_login(object):
         self.win_gl = glade.XML(common.terp_path("openerp.glade"),"win_login",gettext.textdomain())
         self.server_config_dict = {}
 
+    def get_servers(self):
+        self.server_config_dict = serversconfig.servers_config.options
+
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
         def check_server_version(url):
