@@ -528,6 +528,14 @@ class db_login(object):
         # Handle ServerConfig combobox if activated
         combo_sc = self.win_gl.get_widget('combo_sc')
         server_config = options.options['login.server_config']
+        if server_config:
+            self.get_servers()
+
+            sc_liststore = gtk.ListStore(str, str)
+            sc_liststore.append([0, "Select a saved config:"])
+            for key, server in self.server_config_dict.iteritems():
+                    a_title = "{} {} [{}]".format(server['organization'], server['type'], server['env'])
+                    sc_liststore.append([key, a_title])
         host = options.options['login.server']
         port = options.options['login.port']
         protocol = options.options['login.protocol']
