@@ -512,6 +512,18 @@ class db_login(object):
                 database_combo.set_model(liststore)
                 cell = gtk.CellRendererText()
                 database_combo.set_active(0)
+
+                user = selected_conf['user']
+                password = selected_conf['password']
+
+                login.set_text(user)
+                passwd.set_text(password)
+
+            except Exception as e:
+                print ("Error loading config for key '{}': '{}'".format(server_key, e))
+
+        return
+
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
         def check_server_version(url):
