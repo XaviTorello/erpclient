@@ -507,6 +507,11 @@ class db_login(object):
                 db = selected_conf['db']
                 database.set_text(db)
 
+                liststore = gtk.ListStore(str)
+                liststore.append([db])
+                database_combo.set_model(liststore)
+                cell = gtk.CellRendererText()
+                database_combo.set_active(0)
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
         def check_server_version(url):
