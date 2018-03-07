@@ -525,6 +525,9 @@ class db_login(object):
         label = self.win_gl.get_widget('combo_label')
         label.hide()
 
+        # Handle ServerConfig combobox if activated
+        combo_sc = self.win_gl.get_widget('combo_sc')
+        server_config = options.options['login.server_config']
         host = options.options['login.server']
         port = options.options['login.port']
         protocol = options.options['login.protocol']
