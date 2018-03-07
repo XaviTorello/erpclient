@@ -483,6 +483,15 @@ class db_login(object):
     def get_servers(self):
         self.server_config_dict = serversconfig.servers_config.options
 
+    def change_server_config(self, combobox):
+        model = combobox.get_model()
+        index = combobox.get_active()
+        server_widget = self.win_gl.get_widget('ent_server')
+        database_combo = self.win_gl.get_widget('combo_db')
+        database = self.win_gl.get_widget('ent_db')
+        login = self.win_gl.get_widget('ent_login')
+        passwd = self.win_gl.get_widget('ent_passwd')
+
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
         def check_server_version(url):
