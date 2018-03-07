@@ -503,6 +503,10 @@ class db_login(object):
                 port = selected_conf['port']
                 url = '%s%s:%s' % (protocol, host, port)
                 server_widget.set_text(url)
+
+                db = selected_conf['db']
+                database.set_text(db)
+
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
         def check_server_version(url):
