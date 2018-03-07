@@ -496,6 +496,13 @@ class db_login(object):
             server_key = model[index][0]
             server_title = model[index][1]
 
+            try:
+                selected_conf = self.server_config_dict[server_key]
+                protocol = selected_conf['protocol']
+                host = selected_conf['host']
+                port = selected_conf['port']
+                url = '%s%s:%s' % (protocol, host, port)
+                server_widget.set_text(url)
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
         def check_server_version(url):
