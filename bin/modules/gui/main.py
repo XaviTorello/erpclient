@@ -478,6 +478,7 @@ def _server_ask(server_widget, parent=None):
 class db_login(object):
     def __init__(self):
         self.win_gl = glade.XML(common.terp_path("openerp.glade"),"win_login",gettext.textdomain())
+        self.server_config_dict = {}
 
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
