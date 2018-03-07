@@ -492,6 +492,10 @@ class db_login(object):
         login = self.win_gl.get_widget('ent_login')
         passwd = self.win_gl.get_widget('ent_passwd')
 
+        if index:
+            server_key = model[index][0]
+            server_title = model[index][1]
+
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
         def check_server_version(url):
