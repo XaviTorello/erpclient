@@ -77,6 +77,7 @@ class configmanager(object):
             'login.server': 'localhost',
             'login.port': '8070',
             'login.protocol': 'socket://',
+            'login.server_config': False,
             'login.db': 'terp',
             'client.toolbar': 'both',
             'client.theme': 'none',
