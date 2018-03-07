@@ -543,6 +543,8 @@ class db_login(object):
             combo_sc.add_attribute(sc_cell, 'text', 1)
 
             combo_sc.set_active(0)
+            host = combo_sc.get_active()
+            combo_sc.connect('changed', self.change_server_config)
         host = options.options['login.server']
         port = options.options['login.port']
         protocol = options.options['login.protocol']
