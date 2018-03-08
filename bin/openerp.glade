@@ -209,6 +209,10 @@
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
+              <widget class="GtkComboBox" id="combo_sc">
+              </widget>
+            </child>
+            <child>
               <widget class="GtkButton" id="okbutton1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

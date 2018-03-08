@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution	
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
@@ -35,6 +35,7 @@ import rpc
 
 import service
 import options
+import serversconfig
 import common
 
 from window import win_preference, win_extension
@@ -171,7 +172,7 @@ class DatabaseDialog(gtk.Dialog):
                     win = gtk.Window(type=gtk.WINDOW_TOPLEVEL)
                     win.set_title(_('OpenERP Computing'))
                     win.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
-                    win.set_modal(True) 
+                    win.set_modal(True)
                     vbox = gtk.VBox(False, 0)
                     hbox = gtk.HBox(False, 13)
                     hbox.set_border_width(10)
@@ -308,8 +309,8 @@ class MigrationDatabaseDialog(DatabaseDialog):
     def on_response_accept(self):
         databases = [ item[1] for item in self.model if bool(item[0]) ]
         if databases:
-            rpc.session.migrate_databases(self.serverEntry.get_text(), 
-                                          self.adminPwdEntry.get_text(), 
+            rpc.session.migrate_databases(self.serverEntry.get_text(),
+                                          self.adminPwdEntry.get_text(),
                                           databases)
             if len(databases) == 1:
                 self.message = _("Your database has been upgraded.")
@@ -477,6 +478,51 @@ def _server_ask(server_widget, parent=None):
 class db_login(object):
     def __init__(self):
         self.win_gl = glade.XML(common.terp_path("openerp.glade"),"win_login",gettext.textdomain())
+        self.server_config_dict = {}
+
+    def get_servers(self):
+        self.server_config_dict = serversconfig.servers_config.options
+
+    def change_server_config(self, combobox):
+        model = combobox.get_model()
+        index = combobox.get_active()
+        server_widget = self.win_gl.get_widget('ent_server')
+        database_combo = self.win_gl.get_widget('combo_db')
+        database = self.win_gl.get_widget('ent_db')
+        login = self.win_gl.get_widget('ent_login')
+        passwd = self.win_gl.get_widget('ent_passwd')
+
+        if index:
+            server_key = model[index][0]
+            server_title = model[index][1]
+
+            try:
+                selected_conf = self.server_config_dict[server_key]
+                protocol = selected_conf['protocol']
+                host = selected_conf['host']
+                port = selected_conf['port']
+                url = '%s%s:%s' % (protocol, host, port)
+                server_widget.set_text(url)
+
+                db = selected_conf['db']
+                database.set_text(db)
+
+                liststore = gtk.ListStore(str)
+                liststore.append([db])
+                database_combo.set_model(liststore)
+                cell = gtk.CellRendererText()
+                database_combo.set_active(0)
+
+                user = selected_conf['user']
+                password = selected_conf['password']
+
+                login.set_text(user)
+                passwd.set_text(password)
+
+            except Exception as e:
+                print ("Error loading config for key '{}': '{}'".format(server_key, e))
+
+        return
 
     def refreshlist(self, widget, db_widget, entry_db, label, url, butconnect=False):
 
@@ -519,6 +565,32 @@ class db_login(object):
         change_button = self.win_gl.get_widget('but_server')
         label = self.win_gl.get_widget('combo_label')
         label.hide()
+
+        # Handle ServerConfig combobox if config exist
+        combo_sc = self.win_gl.get_widget('combo_sc')
+        combo_sc.hide()
+        self.get_servers()
+        if self.server_config_dict:
+            try:
+                combo_sc.show()
+                sc_liststore = gtk.ListStore(str, str)
+                sc_liststore.append([0, "Select a saved config:"])
+                for key, server in self.server_config_dict.iteritems():
+                        a_title = "{} {} [{}]".format(server['organization'], server['type'], server['env'])
+                        sc_liststore.append([key, a_title])
+
+                combo_sc.set_model(sc_liststore)
+                sc_cell = gtk.CellRendererText()
+                combo_sc.pack_start(sc_cell, True)
+                combo_sc.add_attribute(sc_cell, 'text', 1)
+
+                combo_sc.set_active(0)
+                host = combo_sc.get_active()
+                combo_sc.connect('changed', self.change_server_config)
+            except:
+                # Ensure combo is not showed on error
+                combo_sc.hide()
+                
 
         host = options.options['login.server']
         port = options.options['login.port']
@@ -1221,7 +1293,7 @@ class terp_main(service.Service):
         self.pages.append(win)
         box = gtk.HBox(False, 0)
 
-        # Draw the close button on the right 
+        # Draw the close button on the right
         closebtn = gtk.Button()
         image = gtk.Image()
         image.set_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
@@ -1565,4 +1637,3 @@ class terp_main(service.Service):
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
