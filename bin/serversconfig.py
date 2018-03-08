@@ -99,8 +99,6 @@ class ServersConfig(configmanager):
         if not os.path.exists(rcfile):
             log = logging.getLogger('common.options')
             additional_info = ""
-            if optconfigfile:
-                additional_info = " Be sure to specify an absolute path name if you are using the '-c' command line switch"
             log.warn('Config file %s does not exist !%s'% (rcfile, additional_info ))
         return os.path.abspath(rcfile)
 
