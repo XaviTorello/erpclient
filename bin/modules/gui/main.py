@@ -575,7 +575,8 @@ class db_login(object):
                 combo_sc.show()
                 sc_liststore = gtk.ListStore(str, str)
                 sc_liststore.append([0, "Select a saved config:"])
-                for key, server in self.server_config_dict.iteritems():
+
+                for key, server in sorted(self.server_config_dict.iteritems()):
                         a_title = "{} {} [{}]".format(server['organization'], server['type'], server['env'])
                         sc_liststore.append([key, a_title])
 
