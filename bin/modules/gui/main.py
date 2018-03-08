@@ -571,21 +571,26 @@ class db_login(object):
         combo_sc.hide()
         self.get_servers()
         if self.server_config_dict:
-            combo_sc.show()
-            sc_liststore = gtk.ListStore(str, str)
-            sc_liststore.append([0, "Select a saved config:"])
-            for key, server in self.server_config_dict.iteritems():
-                    a_title = "{} {} [{}]".format(server['organization'], server['type'], server['env'])
-                    sc_liststore.append([key, a_title])
+            try:
+                combo_sc.show()
+                sc_liststore = gtk.ListStore(str, str)
+                sc_liststore.append([0, "Select a saved config:"])
+                for key, server in self.server_config_dict.iteritems():
+                        a_title = "{} {} [{}]".format(server['organization'], server['type'], server['env'])
+                        sc_liststore.append([key, a_title])
 
-            combo_sc.set_model(sc_liststore)
-            sc_cell = gtk.CellRendererText()
-            combo_sc.pack_start(sc_cell, True)
-            combo_sc.add_attribute(sc_cell, 'text', 1)
+                combo_sc.set_model(sc_liststore)
+                sc_cell = gtk.CellRendererText()
+                combo_sc.pack_start(sc_cell, True)
+                combo_sc.add_attribute(sc_cell, 'text', 1)
 
-            combo_sc.set_active(0)
-            host = combo_sc.get_active()
-            combo_sc.connect('changed', self.change_server_config)
+                combo_sc.set_active(0)
+                host = combo_sc.get_active()
+                combo_sc.connect('changed', self.change_server_config)
+            except:
+                # Ensure combo is not showed on error
+                combo_sc.hide()
+                
 
         host = options.options['login.server']
         port = options.options['login.port']
