@@ -566,12 +566,12 @@ class db_login(object):
         label = self.win_gl.get_widget('combo_label')
         label.hide()
 
-        # Handle ServerConfig combobox if activated
+        # Handle ServerConfig combobox if config exist
         combo_sc = self.win_gl.get_widget('combo_sc')
-        server_config = options.options['login.server_config']
-        if server_config:
-            self.get_servers()
-
+        combo_sc.hide()
+        self.get_servers()
+        if self.server_config_dict:
+            combo_sc.show()
             sc_liststore = gtk.ListStore(str, str)
             sc_liststore.append([0, "Select a saved config:"])
             for key, server in self.server_config_dict.iteritems():
@@ -586,8 +586,6 @@ class db_login(object):
             combo_sc.set_active(0)
             host = combo_sc.get_active()
             combo_sc.connect('changed', self.change_server_config)
-        else:
-            combo_sc.hide()
 
         host = options.options['login.server']
         port = options.options['login.port']
